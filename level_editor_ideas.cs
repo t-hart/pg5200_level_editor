@@ -1,12 +1,13 @@
-/// <summary>
-///
-/// </summary>
-
 public enum MovementCost {
     One = 1,
     Two,
     Three,
-    RequiresFlight
+    RequiresFlight = -1
+}
+
+public enum TileState {
+    Occupied,
+    Free
 }
 
 public enum TileEntryStatus {
@@ -19,9 +20,45 @@ public interface IPoint {
     int Y;
 }
 
+public enum Faction {
+    None = -1,
+    Player,
+    EnemyA,
+    EnemyB,
+}
+
+public abstract class Unit {
+    public uint Movement {get;}
+    public Faction Faction {get; set;}
+    public bool IgnoresTerrain {get;}
+    private Unit(){}
+
+    public sealed class Mercenary : Unit {
+        public uint Movement => 6;
+        public bool IgnoresTerrain => false;
+    }
+
+    public sealed class Knight : Unit {
+        public uint Movement => 4;
+        public bool IgnoresTerrain => false;
+    }
+
+    public sealed class Paladin : Unit {
+        public uint Movement => 8;
+        public bool IgnoresTerrain => false;
+    }
+
+    public sealed class PegasusKnight : Unit {
+        public uint Movement => 8;
+        public bool IgnoresTerrain => true;
+    }
+}
+
 public abstract class Tile {
     public IPoint Position {get; set;}
+    public int Height {get; set;}
     public TileEntryStatus North {get; set;}
+
     public TileEntryStatus South {get; set;}
     public TileEntryStatus East {get; set;}
     public TileEntryStatus West {get; set;}
@@ -36,6 +73,7 @@ public abstract class Tile {
 
     public abstract class Walkable : Tile {
         private Walkable(){}
+        [CanBeNull] public Unit Unit {get; set;}
         public MovementCost MovementCost {get;}
     }
 
@@ -52,59 +90,6 @@ public abstract class Tile {
     }
 }
 
-/// x0x
-/// 0M0
-/// x0x
-public interface ITile {
-    TileEntryStatus North;
-    TileEntryStatus South;
-    TileEntryStatus East;
-    TileEntryStatus West;
-}
-
-public enum TileState {
-    Occupied,
-    Free
-}
-
-public enum UnitType {
-    Mercenary,
-    Knight,
-    Paladin,
-    PegasusKnight
-}
-
-public interface IUnit {
-    int Movement;
-    bool IgnoresTerrain;
-}
-
-public interface IScene {
-    Dictionary<IPoint, IUnit> PlayerTeamPositions;
-    Dictionary<IPoint, IUnit> EnemyTeamPositions;
-    IIterable<IIterable<IPoint>> Tiles;
-}
-
-public class Tile {
-    public MovementCost {get; readonly set;}
-
-    private Tile(MovementCost mvmt) {MovementCost = mvmt;}
-
-    public static Tile Ground => Tile(MovementCost);
-    public static Tile Forest => Tile(Two);
-    public static Tile Wall => Tile(Impassable);
-    public static Tile Mountain => Tile(Three);
-    public static Tile Water => Tile(Impassable);
-    public static Tile Chasm => Tile(Impassable);
-}
-
-public interface ITile {
-    MovementCost MovementCost;
-    Terrain Terrain;
-    ITile Ground();
-    ITile Forest();
-    ITile Water();
-    ITile Wall();
-    ITile Mountain();
-    ITile Chasm();
+public interface ILevel {
+    Dictionary<IPoint, Tile> Map;
 }
