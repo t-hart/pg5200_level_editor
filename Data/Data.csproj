@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Faction.cs" />
+    <Compile Include="IImpassable.cs" />
     <Compile Include="IPoint.cs" />
     <Compile Include="ITile.cs" />
     <Compile Include="IUnit.cs" />
+    <Compile Include="IWalkable.cs" />
     <Compile Include="MovementCost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tile.cs" />
@@ -55,6 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Optional\Optional.csproj">
+      <Project>{B66B1D49-31F8-4574-BE9C-3AAA7734F9F3}</Project>
+      <Name>Optional</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

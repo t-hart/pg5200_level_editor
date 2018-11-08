@@ -7,23 +7,16 @@ namespace Optional
     {
         private readonly T _value;
 
-        public bool IsNone { get; }
-        public bool IsSome => !IsNone;
+        public bool IsNone => this is Nothing;
+        public bool IsSome => this is Just;
 
         public T GetWithDefault(T fallback) => IsSome ? _value : fallback;
 
         public IOptional<U> Map<U>(Func<T, IOptional<U>> f) => IsSome ? f(_value) : new  Maybe<U>.Nothing();
 
-        private Maybe()
-        {
-            IsNone = true;
-        }
+        private Maybe() { }
 
-        private Maybe([NotNull] T value)
-        {
-            _value = value;
-            IsNone = false;
-        }
+        private Maybe([NotNull] T value) => _value = value;
 
         public sealed class Nothing : Maybe<T> { }
 
