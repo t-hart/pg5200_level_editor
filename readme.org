@@ -1,1 +1,13 @@
-Initial commit
+* P2500 Level Editor
+  At the time of writing, this is very little more than a conceptual sketch. Certain bits of the architecture / data types have been mocked out, but that is pretty much the extent of it at the moment.
+
+**  Solution Structure
+   The solution tries to separate concerns into their own projects. The 'UI' project contains the actual user interface, while 'Data' contains business logic data types. The 'Optional' project is a separate data type that is completely removed from what goes on in the other projects and could be a standalone library.
+**  Optional
+   The 'Optional' project exposes an interface `IOptional` and two implementations of the interface. The reason for the two implementations is that I'm not yet certain which would work better in actual use, but considering they're both just implementations of an interface, they're interchangeable for now.
+
+  The `IOptional` data type is a way to implement the data type known as `Option` in Rust, Ocaml, and F# ond as `Maybe` in Haskell and its derivatives, which is a way to deal with values that may or may not be there, but which is much less error-prone than having values that can be null.
+
+  The reason for its inclusion in this project is that I want to be able to represent tiles as objects that may or may not have units on them, and I want to be able to treat these tiles the exact same way without caring whether there is a unit or not. For that, the most important method is ~Map~, which would allow me to iterate over all tiles and apply the same function to each and every unit without having to check whether there is a unit there or not first.
+
+  Of course, in this specific case, I could just filter the iterable first, and then apply, but there are many other benefits to this approach and I am now quite curious to see how it would affect my OO-programming.
