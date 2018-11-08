@@ -1,7 +1,11 @@
 using JetBrains.Annotations;
+using Optional;
 
 namespace Data
 {
+    // attempt at making algebraic data types in C#.
+    // based on this post: https://softwareengineering.stackexchange.com/questions/159804/how-do-you-encode-algebraic-data-types-in-a-c-or-java-like-language
+    // to be coupled with pattern matching
     public abstract class Tile : ITile
     {
         public IPoint Position { get; set; }
@@ -21,7 +25,7 @@ namespace Data
             public TileEntryStatus South { get; set; }
             public TileEntryStatus East { get; set; }
             public TileEntryStatus West { get; set; }
-            [CanBeNull] public IUnit Unit { get; set; }
+            public IOptional<IUnit> Unit { get; set; }
 
             public MovementCost MovementCost { get; }
 
