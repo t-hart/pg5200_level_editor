@@ -27,10 +27,10 @@
             <Button Content="Wood"></Button>
         </Grid>
 
-        <ItemsControl x:Name="Map" Grid.Column="1" ItemsSource="{Binding Tiles}" Height="{Binding MapHeight}" Width="{Binding MapWidth}">
+        <ItemsControl x:Name="Map" Grid.Column="1" ItemsSource="{Binding Points}" Height="{Binding MapHeight}" Width="{Binding MapWidth}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas IsItemsHost="true"/>
+                    <Canvas IsItemsHost="true" Background="Transparent"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>

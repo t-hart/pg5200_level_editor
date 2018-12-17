@@ -20,11 +20,14 @@ namespace UI.ViewModel
         public uint TileWidth => 40;
         public uint TileHeight => TileWidth;
 
-        public List<Point> Tiles { get; }
+        public IEnumerable<Point> Points => Tiles.Keys.Select(p => new Point
+            {X = p.x * TileWidth, Y = p.y * TileHeight, TileWidth = TileWidth, TileHeight = TileHeight});
+
+        public Dictionary<(uint x, uint y), string> Tiles { get; }
 
         public MainViewModel()
         {
-            Tiles = Enumerable.Range(0, 12).SelectMany(x => Enumerable.Range(0, 12).Select(y => new Point { X = (uint)x * TileWidth, Y = (uint)y * TileHeight, TileWidth = TileWidth, TileHeight = TileHeight })).ToList();
+            Tiles = Enumerable.Range(0, 12).SelectMany(x => Enumerable.Range(0, 12).Select(y => ((uint)x, (uint)y))).ToDictionary(x => x, x => x.ToString());
         }
 
         public struct Point
