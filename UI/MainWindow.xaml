@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
-        Height="300"
-        Width="300"
         Title="Level editor"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        SizeToContent="WidthAndHeight"
+        DataContext="{Binding Main, Source={StaticResource Locator}}" HorizontalAlignment="Center">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -20,7 +19,7 @@
 
     <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
@@ -28,7 +27,7 @@
             <Button Content="Wood"></Button>
         </Grid>
 
-        <ItemsControl ItemsSource="{Binding Tiles}">
+        <ItemsControl x:Name="Map" Grid.Column="1" ItemsSource="{Binding Tiles}" Height="{Binding MapHeight}" Width="{Binding MapWidth}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas IsItemsHost="true"/>
@@ -42,7 +41,11 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="1" Width="{Binding TileWidth}" Height="{Binding TileHeight}"/>
+                    <Border BorderThickness=".4" Width="{Binding TileWidth}" Height="{Binding TileHeight}">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="Black" Opacity="0.25"/>
+                        </Border.BorderBrush>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -1,5 +1,9 @@
-﻿using GalaSoft.MvvmLight;
-using UI.Model;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Documents;
+using GalaSoft.MvvmLight;
 
 namespace UI.ViewModel
 {
@@ -11,55 +15,24 @@ namespace UI.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private readonly IDataService _dataService;
+        public uint MapWidth => 12 * TileWidth;
+        public uint MapHeight => MapWidth;
+        public uint TileWidth => 40;
+        public uint TileHeight => TileWidth;
 
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
+        public List<Point> Tiles { get; }
 
-        private string _welcomeTitle = string.Empty;
-
-        /// <summary>
-        /// Gets the WelcomeTitle property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public string WelcomeTitle
+        public MainViewModel()
         {
-            get
-            {
-                return _welcomeTitle;
-            }
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
+            Tiles = Enumerable.Range(0, 12).SelectMany(x => Enumerable.Range(0, 12).Select(y => new Point { X = (uint)x * TileWidth, Y = (uint)y * TileHeight, TileWidth = TileWidth, TileHeight = TileHeight })).ToList();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel(IDataService dataService)
+        public struct Point
         {
-            _dataService = dataService;
-            _dataService.GetData(
-                (item, error) =>
-                {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
-
-                    WelcomeTitle = item.Title;
-                });
+            public uint X { get; set; }
+            public uint Y { get; set; }
+            public uint TileWidth { get; set; }
+            public uint TileHeight { get; set; }
         }
-
-        ////public override void Cleanup()
-        ////{
-        ////    // Clean up if needed
-
-        ////    base.Cleanup();
-        ////}
     }
 }
