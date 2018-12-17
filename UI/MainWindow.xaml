@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d ignore"
         Title="Level editor"
         SizeToContent="WidthAndHeight"
@@ -35,13 +37,21 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
                 <Style>
-                    <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
-                    <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness=".4" Width="{Binding TileWidth}" Height="{Binding TileHeight}">
+                    <Border BorderThickness=".4" Width="{Binding TileWidth}" Height="{Binding TileHeight}" Background="{Binding Background}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <command:EventToCommand Command="{Binding MouseDownCommand}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseEnter">
+                                <command:EventToCommand Command="{Binding MouseEnterCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Border.BorderBrush>
                             <SolidColorBrush Color="Black" Opacity="0.25"/>
                         </Border.BorderBrush>
