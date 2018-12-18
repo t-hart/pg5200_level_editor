@@ -59,7 +59,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness=".4" Width="{Binding TileWidth}" Height="{Binding TileHeight}" Background="{Binding Background}">
+                    <Border BorderThickness=".4" Width="{Binding TileWidth}" Height="{Binding TileHeight}" Background="DarkGray">
                         <Image Source="{Binding Tile}"/>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDown">

@@ -32,17 +32,16 @@ namespace UI.ViewModel
         {
             Tiles = Enumerable.Range(0, (int)NumTilesX).SelectMany(x => Enumerable.Range(0, (int)NumTilesY).Select(y => ((uint)x, (uint)y))).ToDictionary(
                         p => p,
-                        p => new PointViewModel(p.Item1 * TileWidth, p.Item2 * TileHeight, TileWidth, TileHeight, Brushes.Transparent, null)
+                        p => new PointViewModel(p.Item1 * TileWidth, p.Item2 * TileHeight, TileWidth, TileHeight, null)
                         );
 
 
             Buttons = new []{
-                ("Empty", TileType.Empty),
-                ("Grass Dark", TileType.GrassDark),
-                ("Grass Light", TileType.GrassLight),
-                ("Flowers Dark", TileType.FlowersDark),
-                ("Flowers Light", TileType.FlowersLight),
-                ("Water", TileType.Water)
+                ("Void", TileType.Void),
+                ("Grass", TileType.Grass),
+                ("Flowers", TileType.Flowers),
+                ("Water", TileType.Water),
+                ("Soil", TileType.Soil)
             }.Select(t => new ButtonViewModel(t.Item1, t.Item2));
         }
 

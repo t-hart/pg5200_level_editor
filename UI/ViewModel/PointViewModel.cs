@@ -12,14 +12,13 @@ namespace UI.ViewModel
         public uint Y { get; }
         public uint TileWidth { get; set; }
         public uint TileHeight { get; set; }
-        public SolidColorBrush Background { get; set; }
         public RelayCommand MouseEnterCommand { get; }
         public RelayCommand MouseDownCommand { get; }
 
         private CroppedBitmap _currentTile;
         public CroppedBitmap Tile { get; set; }
 
-        public PointViewModel(uint x, uint y, uint tileWidth, uint tileHeight, SolidColorBrush background, CroppedBitmap currentTile)
+        public PointViewModel(uint x, uint y, uint tileWidth, uint tileHeight, CroppedBitmap currentTile)
         {
             MessengerInstance.Register<UpdateTileMessage>(this, msg => _currentTile = msg.NewTile);
 
@@ -29,7 +28,6 @@ namespace UI.ViewModel
             Tile = null;
             TileWidth = tileWidth;
             TileHeight = tileHeight;
-            Background = background;
             MouseDownCommand = new RelayCommand(DrawTile);
             MouseEnterCommand = new RelayCommand(() =>
             {

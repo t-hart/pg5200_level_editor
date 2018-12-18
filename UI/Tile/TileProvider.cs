@@ -13,12 +13,11 @@ namespace UI.Tile
 
         private readonly Dictionary<TileType, CroppedBitmap> _tileDict = new Dictionary<TileType, CroppedBitmap>
         {
-            { TileType.Empty, null},
-            { TileType.GrassLight, GetTile(3,8)},
-            { TileType.GrassDark, GetTile(3,7)},
-            { TileType.FlowersLight, GetTile(3,6)},
-            { TileType.FlowersDark, GetTile(3,5)},
+            { TileType.Void, null},
+            { TileType.Grass, GetTile(3,7)},
+            { TileType.Flowers, GetTile(3,5)},
             { TileType.Water, GetTile(2,1)},
+            { TileType.Soil, GetTile(3,13)},
         };
 
         private static readonly BitmapSource BitmapSource =

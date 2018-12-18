@@ -2,11 +2,10 @@ namespace UI.Tile
 {
     public enum TileType
     {
-        Empty,
+        Void,
         Water,
-        GrassDark,
-        GrassLight,
-        FlowersDark,
-        FlowersLight
+        Grass,
+        Flowers,
+        Soil
     }
 }
