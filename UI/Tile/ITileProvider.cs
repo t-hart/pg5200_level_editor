@@ -1,7 +1,9 @@
+using System.Windows.Media.Imaging;
+
 namespace UI.Tile
 {
     public interface ITileProvider
     {
-        ITile Get(TileType type);
+        CroppedBitmap Get(TileType type);
     }
 }

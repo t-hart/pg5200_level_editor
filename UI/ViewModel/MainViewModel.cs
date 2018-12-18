@@ -1,71 +1,66 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.CommandWpf;
+using JetBrains.Annotations;
 using UI.Tile;
-using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace UI.ViewModel
 {
+    [UsedImplicitly]
     public class MainViewModel : ViewModelBase
     {
-        public static uint NumTilesX => 20;
-        public static uint NumTilesY => NumTilesX;
+        public const uint NumTilesX = 20;
+        public const uint NumTilesY = NumTilesX;
+        public const uint TileWidth = 60;
+        public const uint TileHeight = TileWidth;
+
         public uint MapWidth => NumTilesX * TileWidth;
         public uint MapHeight => NumTilesY * TileHeight;
-        public static uint TileWidth => 60;
-        public static uint TileHeight => TileWidth;
 
-        public IEnumerable<Point> Points => Tiles.Values;
+        public IEnumerable<ButtonViewModel> Buttons { get; }
 
-        private Dictionary<(uint x, uint y), Point> Tiles { get; } = Enumerable.Range(0, (int)NumTilesX).SelectMany(x => Enumerable.Range(0, (int)NumTilesY).Select(y => ((uint)x, (uint)y))).ToDictionary(
-            p => p,
-            p => new Point(p.Item1 * TileWidth, p.Item2 * TileHeight, TileWidth, TileHeight, Brushes.AliceBlue)
-            );
+        public IEnumerable<PointViewModel> Points => Tiles.Values;
 
-        public ITileProvider MyTileProvider { get; } = TileProvider.Instance;
+        private Dictionary<(uint x, uint y), PointViewModel> Tiles { get; }
 
 
         public MainViewModel()
         {
+            Tiles = Enumerable.Range(0, (int)NumTilesX).SelectMany(x => Enumerable.Range(0, (int)NumTilesY).Select(y => ((uint)x, (uint)y))).ToDictionary(
+                        p => p,
+                        p => new PointViewModel(p.Item1 * TileWidth, p.Item2 * TileHeight, TileWidth, TileHeight, Brushes.Transparent, null)
+                        );
+
+
+            Buttons = new []{
+                ("Empty", TileType.Empty),
+                ("Grass Dark", TileType.GrassDark),
+                ("Grass Light", TileType.GrassLight),
+                ("Flowers Dark", TileType.FlowersDark),
+                ("Flowers Light", TileType.FlowersLight),
+                ("Water", TileType.Water)
+            }.Select(t => new ButtonViewModel(t.Item1, t.Item2));
         }
 
-        public class Point : ViewModelBase
+        public class ButtonViewModel : ViewModelBase
         {
-            public uint X { get; set; }
-            public uint Y { get; set; }
-            public uint TileWidth { get; set; }
-            public uint TileHeight { get; set; }
-            public SolidColorBrush Background { get; set; }
-            public RelayCommand MouseEnterCommand { get; }
-            public RelayCommand MouseDownCommand { get; }
 
-            public Point(uint x, uint y, uint tileWidth, uint tileHeight, SolidColorBrush background)
+            public string Text { get; set; }
+            public RelayCommand<TileType> Command { get; set; }
+            public TileType TileType { get; set; }
+
+            public ButtonViewModel(string text, TileType type)
             {
-                X = x;
-                Y = y;
-                TileWidth = tileWidth;
-                TileHeight = tileHeight;
-                Background = background;
-                MouseDownCommand = new RelayCommand(ChangeBackground);
-                MouseEnterCommand = new RelayCommand(() =>
-                {
-                    if (Mouse.LeftButton == MouseButtonState.Pressed)
-                    {
-                        ChangeBackground();
-                    }
-                });
-
-                void ChangeBackground()
-                {
-                    Background = Brushes.Black;
-                    RaisePropertyChanged("");
-                }
+                TileType = type;
+                Text = text;
+                Command = new RelayCommand<TileType>(t => MessengerInstance.Send(new UpdateTileMessage(TileProvider.Instance.Get(t))));
             }
 
         }
+
     }
 }

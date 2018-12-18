@@ -25,8 +25,24 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="Buttons">
-            <Button Content="Wood"></Button>
+        <Grid x:Name="ButtonsGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ItemsControl x:Name="Buttons" ItemsSource="{Binding Buttons}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Text}" Command="{Binding Command}" CommandParameter="{Binding TileType}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
 
         <ItemsControl x:Name="Map" Grid.Column="1" ItemsSource="{Binding Points}" Height="{Binding MapHeight}" Width="{Binding MapWidth}">
@@ -44,9 +60,10 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness=".4" Width="{Binding TileWidth}" Height="{Binding TileHeight}" Background="{Binding Background}">
+                        <Image Source="{Binding Tile}"/>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDown">
-                                <command:EventToCommand Command="{Binding MouseDownCommand}"/>
+                                <command:EventToCommand Command="{Binding MouseDownCommand}" />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="MouseEnter">
                                 <command:EventToCommand Command="{Binding MouseEnterCommand}"/>

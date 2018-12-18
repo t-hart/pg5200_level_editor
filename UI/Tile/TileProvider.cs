@@ -1,12 +1,8 @@
 
 using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace UI.Tile
@@ -14,13 +10,20 @@ namespace UI.Tile
     public class TileProvider : ITileProvider
     {
         private const int TileWidth = 16;
-        private const uint Height = 14;
-        private const uint Width = 9;
 
-        private static readonly Image[] Tiles = new Image[Height * Width];
+        private readonly Dictionary<TileType, CroppedBitmap> _tileDict = new Dictionary<TileType, CroppedBitmap>
+        {
+            { TileType.Empty, null},
+            { TileType.GrassLight, GetTile(3,8)},
+            { TileType.GrassDark, GetTile(3,7)},
+            { TileType.FlowersLight, GetTile(3,6)},
+            { TileType.FlowersDark, GetTile(3,5)},
+            { TileType.Water, GetTile(2,1)},
+        };
 
         private static readonly BitmapSource BitmapSource =
             CreateBitmapSource(new Uri(@"pack://application:,,,/Assets/tileset.png"));
+
         private static CroppedBitmap GetTile(int x, int y) => new CroppedBitmap(BitmapSource, new Int32Rect(x * TileWidth, y * TileWidth, TileWidth, TileWidth));
 
         private static BitmapSource CreateBitmapSource(Uri path)
@@ -41,35 +44,19 @@ namespace UI.Tile
 
         private TileProvider()
         {
-            
-            //var path = new Uri(@"pack://application:,,,/Assets/tileset.png").ToString();
-            const string path = "Assets/tileset.png";
-            var image = Image.FromFile(path);
-
-            for (var x = 0; x < Width; x++)
-            {
-                for (var y = 0; y < Height; y++)
-                {
-                    var index = x * Width + y;
-                    Tiles[index] = new Bitmap(TileWidth, TileWidth);
-                    var graphics = Graphics.FromImage(Tiles[index]);
-                    graphics.DrawImage(image, new Rectangle(0, 0, TileWidth, TileWidth), new Rectangle(x * TileWidth, y * TileWidth, TileWidth, TileWidth), GraphicsUnit.Pixel);
-                    graphics.Dispose();
-                }
-            }
-
-            var bmp = CreateBitmapSource(new Uri(@"pack://application:,,,/Assets/tileset.png"));
-            var tile = GetTile(0, 0);
-            Console.WriteLine("");
-
         }
 
         private static TileProvider _instance;
         public static TileProvider Instance => _instance ?? (_instance = new TileProvider());
 
-        public ITile Get(TileType type)
+        public CroppedBitmap Get(TileType type)
         {
-            throw new System.NotImplementedException();
+            if (_tileDict.TryGetValue(type, out var tile))
+            {
+                return tile;
+            }
+
+            throw new InvalidEnumArgumentException(@"This tile type has not been assigned yet.");
         }
     }
 }

@@ -86,6 +86,8 @@
     <Compile Include="Tile\TileProvider.cs" />
     <Compile Include="Tile\TileType.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PointViewModel.cs" />
+    <Compile Include="ViewModel\UpdateTileMessage.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
