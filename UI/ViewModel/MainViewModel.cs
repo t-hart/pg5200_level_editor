@@ -5,6 +5,7 @@ using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.CommandWpf;
+using UI.Tile;
 using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace UI.ViewModel
@@ -24,6 +25,8 @@ namespace UI.ViewModel
             p => p,
             p => new Point(p.Item1 * TileWidth, p.Item2 * TileHeight, TileWidth, TileHeight, Brushes.AliceBlue)
             );
+
+        public ITileProvider MyTileProvider { get; } = TileProvider.Instance;
 
 
         public MainViewModel()
