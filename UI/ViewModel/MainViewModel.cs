@@ -49,14 +49,14 @@ namespace UI.ViewModel
         {
 
             public string Text { get; set; }
-            public RelayCommand<TileType> Command { get; set; }
+            public RelayCommand Command { get; set; }
             public TileType TileType { get; set; }
 
             public ButtonViewModel(string text, TileType type)
             {
                 TileType = type;
                 Text = text;
-                Command = new RelayCommand<TileType>(t => MessengerInstance.Send(new UpdateTileMessage(TileProvider.Instance.Get(t))));
+                Command = new RelayCommand(() => MessengerInstance.Send(new UpdateTileMessage(TileProvider.Instance.Get(TileType))));
             }
 
         }

@@ -39,7 +39,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding Text}" Command="{Binding Command}" CommandParameter="{Binding TileType}" />
+                        <Button Content="{Binding Text}" Command="{Binding Command}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
